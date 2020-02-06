@@ -1,4 +1,6 @@
-﻿namespace Sudoku
+﻿using System.Windows.Forms;
+
+namespace Sudoku
 {
     partial class Form1
     {
@@ -50,7 +52,7 @@
             this.Controls.Add(this.field1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Sudoku [Version 1.0.0.0] [by Tjark Kühl]";
             this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.ResumeLayout(false);
 
@@ -58,7 +60,7 @@
 
         #endregion
 
-        private Controls.Field field1;
+        private Controls.FieldBase field1;
     }
 }
 

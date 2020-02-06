@@ -1,6 +1,6 @@
 ﻿namespace Sudoku.Controls
 {
-    partial class Field
+    partial class FieldBase
     {
         /// <summary> 
         /// Required designer variable.
