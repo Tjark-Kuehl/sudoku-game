@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-
-namespace Sudoku
+﻿namespace Sudoku
 {
-    partial class Form1
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,37 +28,19 @@ namespace Sudoku
         /// </summary>
         private void InitializeComponent()
         {
-            this.field1 = new Sudoku.Controls.Field();
             this.SuspendLayout();
             // 
-            // field1
-            // 
-            this.field1.BackColor = System.Drawing.SystemColors.Control;
-            this.field1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.field1.Location = new System.Drawing.Point(0, 0);
-            this.field1.Name = "field1";
-            this.field1.Padding = new System.Windows.Forms.Padding(10);
-            this.field1.Size = new System.Drawing.Size(784, 761);
-            this.field1.TabIndex = 0;
-            // 
-            // Form1
+            // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(784, 761);
-            this.Controls.Add(this.field1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
-            this.Text = "Sudoku [Version 1.0.0.0] [by Tjark Kühl]";
-            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Name = "SettingsForm";
+            this.Text = "SettingsForm";
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private Controls.Field field1;
     }
 }
-

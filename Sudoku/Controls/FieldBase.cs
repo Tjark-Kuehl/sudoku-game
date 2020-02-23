@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Sudoku.Controls
@@ -114,13 +115,14 @@ namespace Sudoku.Controls
             }
         }
 
-        protected Point? _location, _emm;
+        protected Point? _currentLocation;
+        protected HashSet<Point> _collisionErrors = new HashSet<Point>();
+
         protected Point _m, _mm;
         protected readonly Font _font = new Font("Arial", 32, FontStyle.Regular, GraphicsUnit.Pixel);
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            base.OnKeyUp(e);
 
+
+        private void ProcessBuildupKeybinds(KeyEventArgs e) {
             if (e.KeyCode == Keys.F5)
             {
                 _field = SudokuGenerator.GenerateField(SudokuGenerator.GameDifficulty.Easy, out _solution);
@@ -150,20 +152,29 @@ namespace Sudoku.Controls
                 Invalidate();
                 return;
             }
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            ProcessBuildupKeybinds(e);
 
             byte n;
-            if (_location.HasValue && (int)e.KeyCode >= '1' && (int)e.KeyCode <= '9')
+            if (_currentLocation.HasValue && (int)e.KeyCode >= '1' && (int)e.KeyCode <= '9')
             {
                 n = (byte)((int)e.KeyCode - '1' + 1);
                 Invalidate();
             }
-            else if (_location.HasValue && (int)e.KeyCode >= (int)Keys.NumPad1 && (int)e.KeyCode <= (int)Keys.NumPad9)
+            else if (_currentLocation.HasValue && (int)e.KeyCode >= (int)Keys.NumPad1 && (int)e.KeyCode <= (int)Keys.NumPad9)
             {
                 n = (byte)((int)e.KeyCode - (int)Keys.NumPad1 + 1);
             }
             else { return; }
 
 
+            // Find collision errors
+            _collisionErrors.Clear();
             for (int y = 0; y < 3; y++)
             {
                 for (int x = 0; x < 3; x++)
@@ -171,26 +182,26 @@ namespace Sudoku.Controls
                     int i = x + y * 3;
                     if (_field[i, _m.Y * 3 + _mm.Y].Value == n)
                     {
-                        _emm = new Point(i, _m.Y * 3 + _mm.Y);
-                        Invalidate();
-                        return;
+                        _collisionErrors.Add(new Point(i, _m.Y * 3 + _mm.Y));
                     }
                     if (_field[_m.X * 3 + _mm.X, i].Value == n)
                     {
-                        _emm = new Point(_m.X * 3 + _mm.X, i);
-                        Invalidate();
-                        return;
+                        _collisionErrors.Add(new Point(_m.X * 3 + _mm.X, i));
                     }
 
                     if (_field[x + _m.X * 3, y + _m.Y * 3].Value == n)
                     {
-                        _emm = new Point(x + _m.X * 3, y + _m.Y * 3);
-                        Invalidate();
-                        return;
+                        _collisionErrors.Add(new Point(x + _m.X * 3, y + _m.Y * 3));
                     }
                 }
             }
-            _emm = null;
+
+            if (_collisionErrors.Count > 0)
+            {
+                Invalidate();
+                return;
+            }
+
             _field[_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y].Value = n;
             Invalidate();
             bool finish = true;
@@ -231,13 +242,13 @@ namespace Sudoku.Controls
 
             if (_field[xmm + xm * 3, ymm + ym * 3].Locked != 0)
             {
-                _location = null;
+                _currentLocation = null;
                 return;
             }
 
             if (e.Button == MouseButtons.Left)
             {
-                _location = e.Location;
+                _currentLocation = e.Location;
                 _m = new Point(xm, ym);
                 _mm = new Point(xmm, ymm);
             }
@@ -246,8 +257,7 @@ namespace Sudoku.Controls
                 _field[xmm + xm * 3, ymm + ym * 3].Value = 0;
             }
 
-            _emm = null;
-
+            _collisionErrors.Clear();
             Invalidate();
         }
     }

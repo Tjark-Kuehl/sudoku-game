@@ -7,7 +7,7 @@ namespace Sudoku.Controls
     {
         protected override void OnPaintFieldValues(Graphics g)
         {
-            if (_location.HasValue)
+            if (_currentLocation.HasValue)
             {
                 var w = ClientRectangle.Width - Padding.Right - Padding.Left - 4 * _blackPenBig.Width;
                 var h = ClientRectangle.Height - Padding.Bottom - Padding.Top - 4 * _blackPenBig.Width;
@@ -47,11 +47,11 @@ namespace Sudoku.Controls
                     y + _m.Y * (h3 + _blackPenBig.Width) + _mm.Y * (h33 + _blackPenSmall.Width),
                     w33 - _yellowPenSmall.Width,
                     h33 - _yellowPenSmall.Width);
-                if (_emm.HasValue)
+                foreach (Point collision in _collisionErrors)
                 {
                     g.DrawRectangle(_redPenSmall,
-                   x + _emm.Value.X / 3 * (w3 + _blackPenBig.Width) + _emm.Value.X % 3 * (w33 + _blackPenSmall.Width),
-                   y + _emm.Value.Y / 3 * (h3 + _blackPenBig.Width) + _emm.Value.Y % 3 * (h33 + _blackPenSmall.Width),
+                   x + collision.X / 3 * (w3 + _blackPenBig.Width) + collision.X % 3 * (w33 + _blackPenSmall.Width),
+                   y + collision.Y / 3 * (h3 + _blackPenBig.Width) + collision.Y % 3 * (h33 + _blackPenSmall.Width),
                    w33 - _yellowPenSmall.Width,
                    h33 - _yellowPenSmall.Width);
                 }
