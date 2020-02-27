@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sudoku.Control
 {
-    class Game
+    public class Game
     {
         private readonly Player _player;
         private Field _field;
@@ -12,9 +12,9 @@ namespace Sudoku.Control
             _player = player;
         }
 
-        public void Load(IGameLoader gameLoader)
+        public bool Load(IGameLoader gameLoader)
         {
-            _field = gameLoader.Load(_player);
+          return gameLoader.Load(_player, out _field);
         }
 
         public void Load(SudokuGenerator.GameDifficulty gameDifficulty)

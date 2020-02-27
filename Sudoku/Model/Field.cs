@@ -1,6 +1,6 @@
 ﻿namespace Sudoku.Model
 {
-    class Field
+    public class Field
     {
         private Cell[,] _cells;
         public Field()

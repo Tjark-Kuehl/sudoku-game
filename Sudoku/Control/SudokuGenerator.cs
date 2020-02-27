@@ -6,7 +6,7 @@ using System.Linq;
 namespace Sudoku.Control
 {
 
-    static class SudokuGenerator
+    public static class SudokuGenerator
     {
         private static Random s_rnd = new Random();
         public enum GameDifficulty

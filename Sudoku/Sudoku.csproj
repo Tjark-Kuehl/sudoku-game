@@ -74,6 +74,12 @@
     <Compile Include="Control\IGameLoader.cs" />
     <Compile Include="Model\Field.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="View\ChooseDifficultyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ChooseDifficultyForm.Designer.cs">
+      <DependentUpon>ChooseDifficultyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\CreatePlayerPopupControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,12 +114,9 @@
     <Compile Include="View\Controls\PlayerSelectionMenuControl.Designer.cs">
       <DependentUpon>PlayerSelectionMenuControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Controls\PlayerSelectionMenuListElement.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="View\Controls\PlayerSelectionMenuListElement.Designer.cs">
-      <DependentUpon>PlayerSelectionMenuListElement.cs</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="View\ChooseDifficultyForm.resx">
+      <DependentUpon>ChooseDifficultyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Controls\CreatePlayerPopupControl.resx">
       <DependentUpon>CreatePlayerPopupControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,9 +141,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Controls\PlayerSelectionMenuControl.resx">
       <DependentUpon>PlayerSelectionMenuControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Controls\PlayerSelectionMenuListElement.resx">
-      <DependentUpon>PlayerSelectionMenuListElement.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

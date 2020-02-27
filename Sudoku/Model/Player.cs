@@ -53,7 +53,7 @@ namespace Sudoku.Model
             {
                 return ID == other.ID;
             }
-            return false;
+            return obj?.Equals(this) ?? false;
         }
     }
 }

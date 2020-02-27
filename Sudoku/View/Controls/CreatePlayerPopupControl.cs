@@ -5,7 +5,7 @@ namespace Sudoku.View.Controls
 {
     public partial class CreatePlayerPopupControl : Form
     {
-        public string NewPlayerName => label1.Text;
+        public string NewPlayerName => textBox1.Text;
 
         public CreatePlayerPopupControl()
         {

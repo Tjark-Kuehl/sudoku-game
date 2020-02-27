@@ -1,6 +1,6 @@
 ﻿namespace Sudoku.Model
 {
-    class Cell
+    public class Cell
     {
         public byte Value { get; set; }
         public int Locked { get; set; } = 1;

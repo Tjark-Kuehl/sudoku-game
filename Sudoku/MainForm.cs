@@ -38,18 +38,28 @@ namespace Sudoku
                     Dock = DockStyle.Fill
                 };
 
-                void BlueIStDErGeilste(object sender, Player player)
+                psm.OnUserSelected += (sender, player) =>
                 {
-                    psm.OnUserSelected -= BlueIStDErGeilste;
-                    Controls.Remove(psm);
                     var game = new Game(player);
-                    game.Load(SudokuGenerator.GameDifficulty.Easy);
+
+                    var cdf = new ChooseDifficultyForm(game, new GameLoader())
+                    {
+                        Text = $"player '{player.Name}'",
+                        Title = $"choose difficulty or load a save game",
+                        
+                    };
+                    if (cdf.ShowDialog() != DialogResult.OK)
+                    {
+                        return;
+                    }
+
+                    Controls.Remove(psm);
                     Controls.Add(new GameControl(game)
                     {
                         Dock = DockStyle.Fill
                     });
-                }
-                psm.OnUserSelected += BlueIStDErGeilste;
+
+                };
                 Controls.Add(psm);
             };
             Controls.Add(mmc);

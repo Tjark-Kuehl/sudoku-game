@@ -2,10 +2,10 @@
 
 namespace Sudoku
 {
-    internal interface IGameLoader
+    public interface IGameLoader
     {
         void Save(Player player, Field field);
-        Field Load(Player player);
+        bool Load(Player player, out Field field);
         bool HasSaveFile(Player player, out string saveFile);
     }
 }
