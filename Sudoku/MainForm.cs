@@ -2,8 +2,6 @@
 using Sudoku.View.Controls;
 using System;
 using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Sudoku.View;
 
@@ -28,7 +26,7 @@ namespace Sudoku
                 {
                     m = Math.Min(Size.Width, Size.Height);
                 }
-                Size = new Size(m, m);
+                Size = new Size(m, m + 50);
             };
             _loader = new GameLoader();
             _manager = new PlayerManager();
@@ -58,7 +56,7 @@ namespace Sudoku
                     {
                         Text = $"player '{player.Name}'",
                         Title = "choose difficulty or load a save game",
-
+                        StartPosition = FormStartPosition.CenterParent
                     };
                     if (cdf.ShowDialog() != DialogResult.OK)
                     {
@@ -66,7 +64,7 @@ namespace Sudoku
                     }
 
                     Controls.Remove(psm);
-                    Controls.Add(new GameControl(game)
+                    Controls.Add(new GameMenuControl(game)
                     {
                         Dock = DockStyle.Fill
                     });

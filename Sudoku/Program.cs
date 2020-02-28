@@ -13,9 +13,18 @@ namespace Sudoku
         [STAThread]
         static void Main()
         {
+            for (int i = 0; i < 1000; i+=1)
+            {
+                Console.WriteLine(i + ": " + ScoreFactor(i * 1000));
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+        }
+
+        private static float ScoreFactor(int value)
+        {
+            return 1f + (3f / ((value / 2000f) + 1f));
         }
     }
 }

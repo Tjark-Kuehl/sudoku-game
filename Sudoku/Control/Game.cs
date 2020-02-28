@@ -43,6 +43,29 @@ namespace Sudoku.Control
             return _field[x, y];
         }
 
+        public int CalculateScore(int x, int y, bool collision)
+        {
+            var cell = _field[x, y];
+            if (collision && (cell.ScoreState & 2) != 2)
+            {
+                cell.ScoreState |= 2;
+                return -50;
+            }
+            if (!collision && (cell.ScoreState & 1) != 1)
+            {
+                cell.ScoreState |= 1;
+                return 100;
+            }
+            if (!collision && (cell.ScoreState & 4) != 4)
+            {
+                cell.ScoreState |= 4;
+                return -75;
+            }
+
+            return 0;
+        }
+
+
         public bool TrySet(int xM, int yM, byte value, ref IList<(int, int)> collisions)
         {
             int qX = xM / 3;

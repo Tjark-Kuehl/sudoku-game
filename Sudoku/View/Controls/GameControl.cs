@@ -1,4 +1,5 @@
-﻿using Sudoku.Control;
+﻿using System;
+using Sudoku.Control;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -16,9 +17,16 @@ namespace Sudoku.View.Controls
         protected Point _m, _mm;
         protected readonly Font _font = new Font("Arial", 32, FontStyle.Regular, GraphicsUnit.Pixel);
         private readonly Game _game;
-        public GameControl(Game game)
+        private readonly GameMenuControl _gameMenu;
+
+        private DateTime _scoreTime;
+
+        public event EventHandler<EventArgs> OnGameFinished; 
+
+        public GameControl(Game game, GameMenuControl gameMenu)
         {
             _game = game;
+            _gameMenu = gameMenu;
             InitializeComponent();
 
             _blackPenBig = new Pen(Color.Black, 6.0f);
@@ -28,6 +36,8 @@ namespace Sudoku.View.Controls
             _orangePenSmall = new Pen(Color.Orange, 4.0f);
             _lightYelllow = new SolidBrush(Color.FromArgb(16, Color.Yellow));
             _lightGreen = new SolidBrush(Color.FromArgb(32, Color.Green));
+
+            _scoreTime = DateTime.Now;
         }
 
         void PaintSelection(Graphics g)
@@ -72,11 +82,11 @@ namespace Sudoku.View.Controls
                     y + _m.Y * (h3 + _blackPenBig.Width) + _mm.Y * (h33 + _blackPenSmall.Width),
                     w33 - _yellowPenSmall.Width,
                     h33 - _yellowPenSmall.Width);
-                foreach ((int X, int Y) in _collisions)
+                foreach ((int xx, int yy) in _collisions)
                 {
                     g.DrawRectangle(_redPenSmall,
-                   x + X / 3 * (w3 + _blackPenBig.Width) + X % 3 * (w33 + _blackPenSmall.Width),
-                   y + Y / 3 * (h3 + _blackPenBig.Width) + Y % 3 * (h33 + _blackPenSmall.Width),
+                   x + xx / 3 * (w3 + _blackPenBig.Width) + xx % 3 * (w33 + _blackPenSmall.Width),
+                   y + yy / 3 * (h3 + _blackPenBig.Width) + yy % 3 * (h33 + _blackPenSmall.Width),
                    w33 - _yellowPenSmall.Width,
                    h33 - _yellowPenSmall.Width);
                 }
@@ -274,14 +284,22 @@ namespace Sudoku.View.Controls
                 }
                 return;
             }
+            
+
+            var scoreTime = DateTime.Now;
+            var tb = scoreTime - _scoreTime;
+            var factor = ScoreFactor(tb.Milliseconds);
+            _scoreTime = DateTime.Now;
 
             if (!_game.TrySet(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, n, ref _collisions))
             {
+                this._gameMenu.Score += (int)(_game.CalculateScore(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, true) * factor);
                 Invalidate();
                 return;
             }
 
             Invalidate();
+            this._gameMenu.Score += (int)(_game.CalculateScore(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, false) * factor);
 
             if (_game.IsFinished())
             {
@@ -289,6 +307,10 @@ namespace Sudoku.View.Controls
             }
         }
 
+        private static float ScoreFactor(int value)
+        {
+           return 1f + ( 4f / ( (value / 2000f) + 1f ));
+        }
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnMouseClick(e);
