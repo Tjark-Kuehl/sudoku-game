@@ -1,8 +1,10 @@
 ﻿using Sudoku.Control;
 using Sudoku.View.Controls;
 using System;
+using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Sudoku.Model;
 using Sudoku.View;
 
 namespace Sudoku
@@ -16,8 +18,18 @@ namespace Sudoku
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
-            SizeChanged += Form1_SizeChanged;
-
+            Size s = Size;
+            ResizeEnd += (sender, args) => { this.Refresh(); };
+            ResizeBegin += (sender, args) => { s = Size; };
+            Resize += (sender, args) =>
+            {
+                int m = Math.Max(Size.Width, Size.Height);
+                if (Size.Width < s.Width || Size.Height < s.Height)
+                {
+                    m = Math.Min(Size.Width, Size.Height);
+                }
+                Size = new Size(m, m);
+            };
             _loader = new GameLoader();
             _manager = new PlayerManager();
 
@@ -32,7 +44,7 @@ namespace Sudoku
             mmc.StartGame += (s, e) =>
             {
                 Controls.Remove(mmc);
-                
+
                 PlayerSelectionMenuControl psm = new PlayerSelectionMenuControl(_manager)
                 {
                     Dock = DockStyle.Fill
@@ -42,11 +54,11 @@ namespace Sudoku
                 {
                     var game = new Game(player);
 
-                    var cdf = new ChooseDifficultyForm(game, new GameLoader())
+                    var cdf = new ChooseDifficultyForm(game, _loader)
                     {
                         Text = $"player '{player.Name}'",
-                        Title = $"choose difficulty or load a save game",
-                        
+                        Title = "choose difficulty or load a save game",
+
                     };
                     if (cdf.ShowDialog() != DialogResult.OK)
                     {
@@ -63,17 +75,6 @@ namespace Sudoku
                 Controls.Add(psm);
             };
             Controls.Add(mmc);
-        }
-
-        private void Form1_SizeChanged(object sender, EventArgs e)
-        {
-            if (Size.Width != Size.Height)
-            {
-                int m = Math.Max(Size.Width, Size.Height);
-                SizeChanged -= Form1_SizeChanged;
-                Size = new System.Drawing.Size(m, m);
-                SizeChanged += Form1_SizeChanged;
-            }
         }
     }
 }

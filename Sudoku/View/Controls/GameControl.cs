@@ -1,7 +1,6 @@
 ﻿using Sudoku.Control;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Sudoku.View.Controls
@@ -167,18 +166,18 @@ namespace Sudoku.View.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            using (Graphics g = e.Graphics)
-            using (var b = new Bitmap(Width, Height))
-            using (var bg = Graphics.FromImage(b))
-            {
-                bg.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-                bg.PageScale = g.PageScale;
-                bg.PageUnit = g.PageUnit;
+            using var g = e.Graphics;
+            using var b = new Bitmap(Width, Height);
+            using var bg = Graphics.FromImage(b);
 
-                PaintBoard(bg);
-                PaintSelection(bg);
-                g.DrawImage(b, 0,0);
-            }
+            bg.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            bg.PageScale = g.PageScale;
+            bg.PageUnit = g.PageUnit;
+
+            PaintBoard(bg);
+            PaintSelection(bg);
+            g.DrawImage(b, 0, 0);
+
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
@@ -195,7 +194,86 @@ namespace Sudoku.View.Controls
             {
                 n = (byte)((int)e.KeyCode - (int)Keys.NumPad1 + 1);
             }
-            else { return; }
+            else
+            {
+                if (!_currentLocation.HasValue) { return; }
+
+                bool SetY(int y)
+                {
+                    if (_game.Islocked(_m.X * 3 + _mm.X, y)) return false;
+                    _m.Y = y / 3;
+                    _mm.Y = y - _m.Y * 3;
+                    this.Invalidate();
+                    return true;
+
+                }
+                bool SetX(int x)
+                {
+                    if (_game.Islocked(x, _m.Y * 3 + _mm.Y)) return false;
+                    _m.X = x / 3;
+                    _mm.X = x - _m.X * 3;
+                    this.Invalidate();
+                    return true;
+
+                }
+                switch (e.KeyCode)
+                {
+                    case Keys.S:
+                    case Keys.Down:
+                        {
+                            for (int y = _m.Y * 3 + _mm.Y + 1; y < 9; y++)
+                            {
+                                if (SetY(y)) { return; }
+                            }
+                            for (int y = 0; y < _m.Y * 3 + _mm.Y; y++)
+                            {
+                                if (SetY(y)) { return; }
+                            }
+                            break;
+                        }
+                    case Keys.W:
+                    case Keys.Up:
+                        {
+                            for (int y = _m.Y * 3 + _mm.Y - 1; y >= 0; y--)
+                            {
+                                if (SetY(y)) { return; }
+                            }
+                            for (int y = 8; y > _m.Y * 3 + _mm.Y; y--)
+                            {
+                                if (SetY(y)) { return; }
+                            }
+                            break;
+                        }
+
+                    case Keys.D:
+                    case Keys.Right:
+                        {
+                            for (int x = _m.X * 3 + _mm.X + 1; x < 9; x++)
+                            {
+                                if (SetX(x)) { return; }
+                            }
+                            for (int x = 0; x < _m.X * 3 + _mm.X; x++)
+                            {
+                                if (SetX(x)) { return; }
+                            }
+                            break;
+                        }
+                    case Keys.A:
+                    case Keys.Left:
+                        {
+                            for (int x = _m.X * 3 + _mm.X - 1; x >= 0; x--)
+                            {
+                                if (SetX(x)) { return; }
+                            }
+                            for (int x = 8; x > _m.X * 3 + _mm.X; x--)
+                            {
+                                if (SetX(x)) { return; }
+                            }
+                            break;
+                        }
+                }
+                return;
+            }
 
             if (!_game.TrySet(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, n, ref _collisions))
             {
@@ -215,8 +293,8 @@ namespace Sudoku.View.Controls
         {
             base.OnMouseClick(e);
 
-            var w = ClientRectangle.Width - Padding.Right - Padding.Left;
-            var h = ClientRectangle.Height - Padding.Bottom - Padding.Top;
+            int w = ClientRectangle.Width - Padding.Right - Padding.Left;
+            int h = ClientRectangle.Height - Padding.Bottom - Padding.Top;
 
             float w3 = w / 3.0f;
             float h3 = h / 3.0f;
