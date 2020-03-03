@@ -7,8 +7,8 @@ namespace Sudoku.Model
     {
         public Guid ID { get; }
         public string Name { get; }
-        public int GameCount { get; set; }
         public int Score { get; set; }
+        public int GameCount { get; set; }
         public int Playtime { get; set; }
         public DateTime Created { get; }
 
@@ -40,20 +40,6 @@ namespace Sudoku.Model
             writer.Write(Score);
             writer.Write(Playtime);
             writer.Write(Created.Ticks);
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Player other)
-            {
-                return ID == other.ID;
-            }
-            return obj?.Equals(this) ?? false;
         }
     }
 }

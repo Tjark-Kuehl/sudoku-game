@@ -1,44 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Sudoku.Model;
 
 namespace Sudoku.Control
 {
-    public class PlayerManager
+    public class PlayerLoader : IPlayerLoader
     {
-        private const string SAVE_FILE = "players.dat";
-
-        public HashSet<Player> Players { get; } = new HashSet<Player>();
-
-        public PlayerManager()
+        public void SavePlayer(Player player)
         {
-            if (!File.Exists(SAVE_FILE)) return;
-
-            using var fs = new FileStream(SAVE_FILE, FileMode.Open);
-            using var reader = new BinaryReader(fs);
-            int pc = reader.ReadInt32();
-            for (int i = 0; i < pc; i++)
-            {
-                Players.Add(new Player(reader));
-            }
-        }
-
-        public void SavePlayer()
-        {
-            using var fs = new FileStream(SAVE_FILE, FileMode.Create);
+            using var fs = new FileStream(Path.Combine("player", player.ID.ToString()), FileMode.Create, FileAccess.Write);
             using var writer = new BinaryWriter(fs);
-
-            writer.Write(Players.Count);
-            foreach (var player in Players)
-            {
-                player.Save(writer);
-            }
+            player.Save(writer);
         }
 
-        public void RegisterPlayer(Player player)
+        public IEnumerable<Player> LoadPlayers()
         {
-            Players.Add(player);
-            SavePlayer();
+            DirectoryInfo d = new DirectoryInfo("player");
+            d.Create();
+            foreach (var file in d.GetFiles())      
+            {
+                using var fs = file.Open(FileMode.Open, FileAccess.Read);
+                using var reader = new BinaryReader(fs);
+                yield return new Player(reader);
+            }
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using Sudoku.Control;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Sudoku.Model;
 
 namespace Sudoku.View.Controls
 {
@@ -19,7 +21,6 @@ namespace Sudoku.View.Controls
         private readonly Game _game;
         private readonly GameMenuControl _gameMenu;
 
-        private DateTime _scoreTime;
 
         public event EventHandler<EventArgs> OnGameFinished; 
 
@@ -36,8 +37,6 @@ namespace Sudoku.View.Controls
             _orangePenSmall = new Pen(Color.Orange, 4.0f);
             _lightYelllow = new SolidBrush(Color.FromArgb(16, Color.Yellow));
             _lightGreen = new SolidBrush(Color.FromArgb(32, Color.Green));
-
-            _scoreTime = DateTime.Now;
         }
 
         void PaintSelection(Graphics g)
@@ -123,7 +122,6 @@ namespace Sudoku.View.Controls
                             oh,
                             x + w,
                             oh);
-
             }
             for (int i = 0; i < 3; i++)
             {
@@ -173,6 +171,7 @@ namespace Sudoku.View.Controls
                 }
         }
 
+        private IEnumerator<Field> enumerator;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -189,11 +188,26 @@ namespace Sudoku.View.Controls
             g.DrawImage(b, 0, 0);
 
         }
-
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            base.OnKeyUp(e);
 
+            if (e.KeyCode == Keys.F5)
+            {
+                enumerator = SudokuGenerator.Solutions(_game).GetEnumerator();
+                if (enumerator.MoveNext())
+                {
+                    _game.SetField(enumerator.Current);
+                    this.Invalidate();
+                }
+            }
+            if (e.KeyCode == Keys.F6)
+            {
+                if (enumerator.MoveNext())
+                {
+                    _game.SetField(enumerator.Current); this.Invalidate();
+                }
+            }
+            base.OnKeyUp(e);
             byte n;
             if (_currentLocation.HasValue && (int)e.KeyCode >= '1' && (int)e.KeyCode <= '9')
             {
@@ -210,7 +224,7 @@ namespace Sudoku.View.Controls
 
                 bool SetY(int y)
                 {
-                    if (_game.Islocked(_m.X * 3 + _mm.X, y)) return false;
+                    if (_game.IsLocked(_m.X * 3 + _mm.X, y)) return false;
                     _m.Y = y / 3;
                     _mm.Y = y - _m.Y * 3;
                     this.Invalidate();
@@ -219,7 +233,7 @@ namespace Sudoku.View.Controls
                 }
                 bool SetX(int x)
                 {
-                    if (_game.Islocked(x, _m.Y * 3 + _mm.Y)) return false;
+                    if (_game.IsLocked(x, _m.Y * 3 + _mm.Y)) return false;
                     _m.X = x / 3;
                     _mm.X = x - _m.X * 3;
                     this.Invalidate();
@@ -284,32 +298,18 @@ namespace Sudoku.View.Controls
                 }
                 return;
             }
-            
-
-            var scoreTime = DateTime.Now;
-            var tb = scoreTime - _scoreTime;
-            var factor = ScoreFactor(tb.Milliseconds);
-            _scoreTime = DateTime.Now;
 
             if (!_game.TrySet(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, n, ref _collisions))
             {
-                this._gameMenu.Score += (int)(_game.CalculateScore(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, true) * factor);
                 Invalidate();
                 return;
             }
 
             Invalidate();
-            this._gameMenu.Score += (int)(_game.CalculateScore(_m.X * 3 + _mm.X, _m.Y * 3 + _mm.Y, false) * factor);
-
             if (_game.IsFinished())
             {
-                MessageBox.Show("Congratz du kleiner wicht!");
+                OnGameFinished?.Invoke(this, EventArgs.Empty);
             }
-        }
-
-        private static float ScoreFactor(int value)
-        {
-           return 1f + ( 4f / ( (value / 2000f) + 1f ));
         }
         protected override void OnMouseClick(MouseEventArgs e)
         {
@@ -330,7 +330,7 @@ namespace Sudoku.View.Controls
             int xmm = (int)(((lx - (xm * w3)) / w3) * 3);
             int ymm = (int)(((ly - (ym * h3)) / h3) * 3);
 
-            if (_game.Islocked(xmm + xm * 3, ymm + ym * 3))
+            if (_game.IsLocked(xmm + xm * 3, ymm + ym * 3))
             {
                 _currentLocation = null;
                 return;

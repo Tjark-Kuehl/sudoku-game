@@ -1,30 +1,77 @@
-﻿using Sudoku.Model;
+﻿using System;
+using Sudoku.Model;
 using System.Collections.Generic;
+using Timer = System.Timers.Timer;
 
 namespace Sudoku.Control
 {
     public class Game
     {
-        private readonly Player _player;
+        public event EventHandler<int> OnTimeChanged;
+        public event EventHandler<int> OnScoreChanged;
+
+        private DateTime _scoreTime;
+        private int _score;
+        private int _time;
+        public Player Player { get; }
+
         private Field _field;
-        public Game(Player player)
+        private Timer _timer;
+
+        public int Time
         {
-            _player = player;
+            get { return _time; }
+            private set
+            {
+                _time = value;
+
+                OnTimeChanged?.Invoke(this, _time);
+            }
         }
 
-        public bool Load(IGameLoader gameLoader)
+        public int Score
         {
-          return gameLoader.Load(_player, out _field);
+            get { return _score; }
+            private set
+            {
+                _score = value;
+                OnScoreChanged?.Invoke(this, _score);
+            }
+        }
+
+        public Game(Player player, int time, int score)
+        {
+            Player = player;
+            Score = score;
+            Time = time;
+        }
+
+        public Game(Player player)
+        {
+            Player = player;
         }
 
         public void Load(SudokuGenerator.GameDifficulty gameDifficulty)
         {
             _field = SudokuGenerator.GenerateField(gameDifficulty);
         }
-
-        public void Save(IGameLoader gameLoader)
+        public void Load()
         {
-             gameLoader.Save(_player, _field);
+            _field = new Field();
+        }
+        public void Start()
+        {
+            _timer?.Dispose();
+            _timer = new Timer(1000);
+            _timer.Elapsed += (sender, args) => { Time += 1; };
+            _timer.Start();
+            _scoreTime = DateTime.Now;
+        }
+
+        public void End()
+        {
+            _timer?.Dispose();
+            _timer = null;
         }
 
         public void Set(int x, int y, byte value)
@@ -33,7 +80,12 @@ namespace Sudoku.Control
                 _field[x, y].Value = value;
         }
 
-        public bool Islocked(int x, int y)
+        public void Set(int x, int y, Cell c)
+        {
+            _field[x, y] = c;
+        }
+
+        public bool IsLocked(int x, int y)
         {
             return _field[x, y].Locked != 0;
         }
@@ -65,7 +117,6 @@ namespace Sudoku.Control
             return 0;
         }
 
-
         public bool TrySet(int xM, int yM, byte value, ref IList<(int, int)> collisions)
         {
             int qX = xM / 3;
@@ -91,13 +142,31 @@ namespace Sudoku.Control
                     }
                 }
             }
+
+            var scoreTime = DateTime.Now;
+            var tb = scoreTime - _scoreTime;
+            var factor = ScoreFactor(tb.Milliseconds);
+            _scoreTime = DateTime.Now;
+
             if (collisions.Count > 0)
             {
+                this.Score += (int)(CalculateScore(xM, yM, true) * factor);
                 return false;
             }
 
             _field[xM, yM].Value = value;
+            this.Score += (int)(CalculateScore(xM, yM, false) * factor);
             return true;
+        }
+
+        private static float ScoreFactor(int value)
+        {
+            return 1f + (4f / ((value / 2000f) + 1f));
+        }
+
+        public void SetField(Field f)
+        {
+            _field = f;
         }
 
         public bool IsFinished()

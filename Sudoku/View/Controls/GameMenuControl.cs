@@ -1,43 +1,62 @@
 ﻿using System;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using Sudoku.Control;
-using Timer = System.Timers.Timer;
 
 namespace Sudoku.View.Controls
 {
     public partial class GameMenuControl : UserControl
     {
-        public int Score
+        public event EventHandler<EventArgs> OnGameFinished;
+        private int Score
         {
-            get { return int.Parse(label2.Text); }
-            set { label2.Text = value.ToString(); }
+            get { return int.Parse(score.Text); }
+            set { score.Text = value.ToString(); }
         }
-        public int Time
+        private int Time
         {
-            get { return int.Parse(label3.Text); }
-            set{label3.Text = value.ToString();}
+            get { return int.Parse(time.Text); }
+            set { time.Text = value.ToString(); }
         }
 
         public GameMenuControl(Game game)
         {
             InitializeComponent();
-            this.tableLayoutPanel1.Controls.Add(new GameControl(game, this)
+            Score = game.Score;
+            Time = game.Time;
+            var gameControl = new GameControl(game, this)
             {
                 Dock = DockStyle.Fill
-            }, 0, 1);
-            Timer t = new Timer(1000);
-            t.Elapsed += (sender, args) =>
+            };
+            this.tableLayoutPanel1.Controls.Add(gameControl, 0, 1);
+
+            game.OnTimeChanged += (sender, t) =>
             {
-                if (label3.InvokeRequired)
+                if (time.InvokeRequired)
                 {
-                    label3.Invoke(new Action(() => { Time += 1; }));
+                    time.Invoke((MethodInvoker) delegate { Time = t; });
                     return;
                 }
-                Time += 1;
+
+                Time = t;
             };
-            t.Start();
+
+            game.OnScoreChanged += (sender, s) =>
+            {
+                if (score.InvokeRequired)
+                {
+                    score.Invoke((MethodInvoker)delegate { Score = s; });
+                    return;
+                }
+
+                Score = s;
+            };
+
+            gameControl.OnGameFinished += (sender, args) =>
+            {
+                game.End();
+                OnGameFinished?.Invoke(this, args);
+            };
+            game.Start();
         }
-    
     }
 }

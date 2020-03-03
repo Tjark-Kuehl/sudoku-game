@@ -9,8 +9,8 @@ namespace Sudoku
 {
     public partial class MainForm : Form
     {
-        private IGameLoader _loader;
-        private PlayerManager _manager;
+        private IGameLoader _gameLoader;
+        private IPlayerLoader _playerLoader;
 
         public MainForm()
         {
@@ -28,10 +28,16 @@ namespace Sudoku
                 }
                 Size = new Size(m, m + 50);
             };
-            _loader = new GameLoader();
-            _manager = new PlayerManager();
+            _gameLoader = new GameLoader();
+            _playerLoader = new PlayerLoader();
+            LoadMainMenu();
+        }
 
-            MainMenuControl mmc = new MainMenuControl
+
+        public void LoadMainMenu()
+        {
+            Controls.Clear();
+            var mmc = new MainMenuControl
             {
                 Dock = DockStyle.Fill
             };
@@ -43,32 +49,67 @@ namespace Sudoku
             {
                 Controls.Remove(mmc);
 
-                PlayerSelectionMenuControl psm = new PlayerSelectionMenuControl(_manager)
+                PlayerSelectionMenuControl psm = new PlayerSelectionMenuControl(_playerLoader)
                 {
                     Dock = DockStyle.Fill
                 };
 
                 psm.OnUserSelected += (sender, player) =>
                 {
-                    var game = new Game(player);
 
-                    var cdf = new ChooseDifficultyForm(game, _loader)
+                    var cdf = new ChooseDifficultyForm(player, _gameLoader)
                     {
                         Text = $"player '{player.Name}'",
                         Title = "choose difficulty or load a save game",
                         StartPosition = FormStartPosition.CenterParent
                     };
-                    if (cdf.ShowDialog() != DialogResult.OK)
+                    var res = cdf.ShowDialog();
+                    Game game;
+                    switch (res)
                     {
-                        return;
+                        case DialogResult.OK:
+                            game = new Game(player);
+                            game.Load(cdf.ChoosenDifficulty); 
+                            break;
+                        case DialogResult.Yes:
+                            _gameLoader.Load(player, out game);
+                            break;
+                        default:
+                            return;
                     }
 
                     Controls.Remove(psm);
-                    Controls.Add(new GameMenuControl(game)
+                    var gmc = new GameMenuControl(game)
                     {
                         Dock = DockStyle.Fill
-                    });
+                    };
+                    gmc.OnGameFinished += (ss, ee) =>
+                    {
+                        Controls.Remove(gmc);
+                        player.GameCount += 1;
+                        player.Playtime += game.Time;
+                        player.Score += game.Score;
+                        _playerLoader.SavePlayer(player);
 
+                        var gec = new GameEndControl(player, game.Time, game.Score)
+                        {
+                            Dock = DockStyle.Fill
+                        };
+                        gec.OnBackToMainMenuClicked += (sss, eee) =>
+                        {
+                           LoadMainMenu();
+                        };
+                        Controls.Add(gec);
+
+                    };
+                   
+                    void Close(object sender, EventArgs e)
+                    {
+                        _gameLoader.Save(game);
+                    }
+                    FormClosing -= Close;
+                    FormClosing += Close;
+                    Controls.Add(gmc);
                 };
                 Controls.Add(psm);
             };

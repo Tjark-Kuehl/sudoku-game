@@ -1,45 +1,56 @@
 ﻿using Sudoku.Model;
-using System;
 using System.IO;
-using System.Text;
+using Sudoku.Control;
 
 namespace Sudoku
 {
     class GameLoader : IGameLoader
     {
-        public void Save(Player player, Field field)
+        public void Save(Game game)
         {
-            using var s = File.OpenWrite($".\\{Convert.ToBase64String(Encoding.UTF8.GetBytes(player.Name))}.sud");
-            using var w = new BinaryWriter(s);
-            for (int x = 0; x < 9; x++)
-            for (int y = 0; y < 9; y++)
+            if (!HasSaveFile(game.Player, out var saveFile))
             {
-                w.Write(field[x, y].Value);
-                w.Write(field[x, y].Locked);
+                saveFile.Directory.Create();
             }
+            using var s = saveFile.Open(FileMode.Create, FileAccess.Write);
+            using var w = new BinaryWriter(s);
+            w.Write(game.Time);
+            w.Write(game.Score);
+            for (int x = 0; x < 9; x++)
+                for (int y = 0; y < 9; y++)
+                {
+                    var cell = game.Get(x, y);
+                    w.Write(cell.Value);
+                    w.Write(cell.Locked);
+                    w.Write(cell.ScoreState);
+                }
         }
 
-        public bool Load(Player player, out Field field)
+        public bool Load(Player player, out Game game)
         {
-            field = new Field();
-            if (!HasSaveFile(player, out string saveFile)) return false;
-            using var s = File.OpenRead(saveFile);
+            game = null;
+            if (!HasSaveFile(player, out var saveFile)) return false;
+            using var s = saveFile.Open(FileMode.Open, FileAccess.Read);
             using var r = new BinaryReader(s);
+            game = new Game(player, r.ReadInt32(), r.ReadInt32());
+            game.Load();
             for (int x = 0; x < 9; x++)
-            for (int y = 0; y < 9; y++)
-            {
-                field[x, y] = new Cell
+                for (int y = 0; y < 9; y++)
                 {
-                    Value = r.ReadByte(),
-                    Locked = r.ReadInt32()
-                };
-            }
+                    game.Set(x, y, new Cell
+                    {
+                        Value = r.ReadByte(),
+                        Locked = r.ReadInt32(),
+                        ScoreState = r.ReadByte()
+                    });
+                }
             return true;
         }
 
-        public bool HasSaveFile(Player player, out string saveFile)
+        public bool HasSaveFile(Player player, out FileInfo saveFile)
         {
-            return File.Exists(saveFile = $".\\{Convert.ToBase64String(Encoding.UTF8.GetBytes(player.Name))}.sud");
+            saveFile = new FileInfo(Path.Combine("savegames", player.ID.ToString()));
+            return saveFile.Exists;
         }
     }
 }

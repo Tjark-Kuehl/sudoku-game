@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\IPlayerLoader.cs" />
     <Compile Include="Control\PlayerManager.cs" />
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Control\Game.cs" />
@@ -102,6 +103,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Control\GameLoader.cs" />
     <Compile Include="Control\SudokuGenerator.cs" />
+    <Compile Include="View\Controls\GameEndControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Controls\GameEndControl.Designer.cs">
+      <DependentUpon>GameEndControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\GameMenuControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +149,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="View\Controls\GameEndControl.resx">
+      <DependentUpon>GameEndControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\Controls\GameMenuControl.resx">
       <DependentUpon>GameMenuControl.cs</DependentUpon>
     </EmbeddedResource>
