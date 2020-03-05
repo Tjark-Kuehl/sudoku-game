@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using Sudoku.Control;
 using Sudoku.Model;
 
-namespace Sudoku
+namespace Sudoku.Control
 {
     public interface IGameLoader
     {

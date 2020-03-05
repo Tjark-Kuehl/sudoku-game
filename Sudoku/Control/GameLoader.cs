@@ -1,8 +1,7 @@
-﻿using Sudoku.Model;
-using System.IO;
-using Sudoku.Control;
+﻿using System.IO;
+using Sudoku.Model;
 
-namespace Sudoku
+namespace Sudoku.Control
 {
     class GameLoader : IGameLoader
     {

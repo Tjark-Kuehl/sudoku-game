@@ -9,12 +9,47 @@ namespace Sudoku.Control
     public static class SudokuGenerator
     {
         private static Random s_rnd = new Random();
-        public enum GameDifficulty
-        {
-            Easy = 40,
-            Medium = 50,
-            Hard = 60
+
+
+        public abstract class GameDifficulty
+        { 
+            protected GameDifficulty()
+            {
+                
+            }
+
+           public abstract int EmptyFieldCount { get; }
+
+           public sealed class Easy : GameDifficulty
+           {
+               public override int EmptyFieldCount
+               {
+                   get => 40;
+               }
+
+               public static readonly Easy Default = new Easy();
+           }
+
+           public sealed class Medium : GameDifficulty
+           {
+               public override int EmptyFieldCount
+               {
+                   get => 50;
+               }
+               public static readonly Medium Default = new Medium();
+            }
+
+           public sealed class Hard : GameDifficulty
+           {
+               public override int EmptyFieldCount
+               {
+                   get => 60;
+               }
+               public static readonly Hard Default = new Hard();
+            }
         }
+
+
         public static Field GenerateField(GameDifficulty gameDifficulty, int possibleSolutionMax = 80)
         {
         retry:
@@ -63,7 +98,7 @@ namespace Sudoku.Control
                 }
             }
 
-            for (int i = 0; i < (int)gameDifficulty; i++)
+            for (int i = 0; i < gameDifficulty.EmptyFieldCount; i++)
             {
                 if (field[s_rnd.Next(9), s_rnd.Next(9)].Value != 0)
                 {

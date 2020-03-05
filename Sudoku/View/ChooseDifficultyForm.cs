@@ -9,7 +9,7 @@ namespace Sudoku.View
     {
         private readonly IGameLoader _loader;
 
-        public SudokuGenerator.GameDifficulty ChoosenDifficulty = (SudokuGenerator.GameDifficulty)(-1);
+        public SudokuGenerator.GameDifficulty ChoosenDifficulty = null;
 
         public string Title
         {
@@ -26,21 +26,21 @@ namespace Sudoku.View
         private void button1_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
-            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Easy;
+            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Easy.Default;
             this.DialogResult = DialogResult.OK;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
-            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Medium;
+            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Medium.Default;
             this.DialogResult = DialogResult.OK;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
-            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Hard;
+            ChoosenDifficulty = SudokuGenerator.GameDifficulty.Hard.Default;
             this.DialogResult = DialogResult.OK;
         }
 

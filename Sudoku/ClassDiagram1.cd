@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Sudoku.Control.Game">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAiAAAACggBghAAAAAAAAAAAAAAAAABAAAARAAgRA=</HashCode>
+      <FileName>Control\Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.Control.GameLoader" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Control\GameLoader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Sudoku.Control.PlayerLoader" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\PlayerManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="Sudoku.Control.SudokuGenerator" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Sudoku.Control.SudokuGenerator.GameDifficulty" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Control\SudokuGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QEAAABAAAAgAAAAAAQEAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\SudokuGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.FieldRenderer">
+    <Position X="17" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAgAAAEAAAIAAAABAQCAAIAAABAAAAAAAAI=</HashCode>
+      <FileName>FieldRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.MainForm" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAQAAACAAAACAAACAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.Program" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.Model.Cell">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAACAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Cell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.Model.Field">
+    <Position X="14.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABCAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Field.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_cells" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Sudoku.Model.Player">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAgAgAAAAAAAQAAAACAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.Properties.Resources">
+    <Position X="5.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAQAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.ChooseDifficultyForm" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACBAAFAAAACAAAACQEA4AAAAAHAIAAAAAAA=</HashCode>
+      <FileName>View\ChooseDifficultyForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.CreatePlayerPopupControl" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACQAABAAAACAIAACAAAAAAAAEAAQAACgAAA=</HashCode>
+      <FileName>View\Controls\CreatePlayerPopupControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.GameControl">
+    <Position X="5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQAAAACKAAAAAAACAoCACAAAAAAAAAgAACAAAAAQ=</HashCode>
+      <FileName>View\Controls\GameControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.GameEndControl">
+    <Position X="9.5" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAEAACAAAACAAAYAAAAAggEAQAACCA=</HashCode>
+      <FileName>View\Controls\GameEndControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.GameMenuControl">
+    <Position X="11.75" Y="14.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACIAQAgAAACIAAACAAAIAAAAAEAEAAAASSQ=</HashCode>
+      <FileName>View\Controls\GameMenuControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.MainMenuControl">
+    <Position X="7.25" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAAiAAAYAAAAAGAAAAAQAAA=</HashCode>
+      <FileName>View\Controls\MainMenuControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sudoku.View.Controls.PlayerSelectionMenuControl">
+    <Position X="14.25" Y="14.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>QACAAAAQACAAAAYAAACAAAACAAAIAAAAAAgAAAAAACA=</HashCode>
+      <FileName>View\Controls\PlayerSelectionMenuControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Forms.UserControl">
+    <Position X="11" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Object">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Sudoku.Control.IGameLoader">
+    <Position X="19.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Control\IGameLoader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Sudoku.Control.IPlayerLoader">
+    <Position X="21.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\IPlayerLoader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
