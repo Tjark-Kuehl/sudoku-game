@@ -91,7 +91,7 @@ namespace Sudoku
                         player.Score += game.Score;
                         _playerLoader.SavePlayer(player);
 
-                        var gec = new GameEndControl(player, game.Time, game.Score)
+                        var gec = new GameEndControl(game)
                         {
                             Dock = DockStyle.Fill
                         };

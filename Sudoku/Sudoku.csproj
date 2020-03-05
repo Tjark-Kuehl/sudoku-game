@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Control\IPlayerLoader.cs" />
     <Compile Include="Control\PlayerManager.cs" />
+    <Compile Include="FieldRenderer.cs" />
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Control\Game.cs" />
     <Compile Include="Control\IGameLoader.cs" />

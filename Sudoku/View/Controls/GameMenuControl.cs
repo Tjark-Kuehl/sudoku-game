@@ -6,6 +6,7 @@ namespace Sudoku.View.Controls
 {
     public partial class GameMenuControl : UserControl
     {
+        private readonly Game _game;
         public event EventHandler<EventArgs> OnGameFinished;
         private int Score
         {
@@ -20,6 +21,7 @@ namespace Sudoku.View.Controls
 
         public GameMenuControl(Game game)
         {
+            _game = game;
             InitializeComponent();
             Score = game.Score;
             Time = game.Time;
@@ -57,6 +59,12 @@ namespace Sudoku.View.Controls
                 OnGameFinished?.Invoke(this, args);
             };
             game.Start();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _game.End();
+            OnGameFinished?.Invoke(this, EventArgs.Empty);
         }
     }
 }

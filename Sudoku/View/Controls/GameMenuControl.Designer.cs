@@ -35,6 +35,7 @@
             this.bottom_panel = new System.Windows.Forms.Panel();
             this.time = new System.Windows.Forms.Label();
             this.time_label = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.top_pnael.SuspendLayout();
             this.bottom_panel.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // top_pnael
             // 
+            this.top_pnael.Controls.Add(this.button1);
             this.top_pnael.Controls.Add(this.score);
             this.top_pnael.Controls.Add(this.score_label);
             this.top_pnael.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -120,6 +122,16 @@
             this.time_label.Text = "Time:";
             this.time_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(513, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // GameMenuControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,5 +155,6 @@
         private System.Windows.Forms.Panel bottom_panel;
         private System.Windows.Forms.Label time;
         private System.Windows.Forms.Label time_label;
+        private System.Windows.Forms.Button button1;
     }
 }

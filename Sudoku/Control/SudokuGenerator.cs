@@ -11,15 +11,15 @@ namespace Sudoku.Control
         private static Random s_rnd = new Random();
         public enum GameDifficulty
         {
-            Easy = 1,
+            Easy = 40,
             Medium = 50,
             Hard = 60
         }
-        public static Field GenerateField(GameDifficulty gameDifficulty)
+        public static Field GenerateField(GameDifficulty gameDifficulty, int possibleSolutionMax = 80)
         {
         retry:
             Field field = new Field();
-            Stack<byte> xs = new Stack<byte>(Enumerable.Range(1, 9).Select(s => (byte)s).OrderBy(s => s_rnd.Next()));
+            Stack<byte> xs = new Stack<byte>(Possibilities.OrderBy(s => s_rnd.Next()));
             for (int x = 0; x < 9; x++)
             {
                 field[x, 0] = new Cell { Value = xs.Pop() };
@@ -48,17 +48,18 @@ namespace Sudoku.Control
                             p.Add(field[xq, yq].Value);
                         }
                     }
-                    try
-                    {
-                        field[x, y] = new Cell
-                        {
-                            Value = Enumerable.Range(1, 9).Select(s => (byte)s).Where(s => !p.Contains(s)).OrderBy(s => s_rnd.Next()).First()
-                        };
-                    }
-                    catch
+
+                    var v = Possibilities.Where(s => !p.Contains(s)).OrderBy(s => s_rnd.Next());
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    if (!v.Any())
                     {
                         goto retry;
                     }
+                    field[x, y] = new Cell
+                    {
+                        // ReSharper disable once PossibleMultipleEnumeration
+                        Value = v.First()
+                    };
                 }
             }
 
@@ -73,19 +74,22 @@ namespace Sudoku.Control
                 else i--;
             }
 
+            if(Solutions(field).Count() > possibleSolutionMax)
+                goto retry;
+
             return field;
         }
 
-        public static IEnumerable<Field> Solutions(Game game)
+        public static IEnumerable<Field> Solutions(Field field)
         {
             Field f = new Field();
             for (int y = 0; y < 9; y++)
                 for (int x = 0; x < 9; x++)
                 {
-                    f[x, y] = game.Get(x, y).Locked == 1
+                    f[x, y] = field[x,y].Locked == 1
                         ? new Cell
                         {
-                            Value = game.Get(x, y).Value
+                            Value = field[x, y].Value
                         }
                         : new Cell
                         {

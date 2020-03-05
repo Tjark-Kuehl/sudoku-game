@@ -15,7 +15,7 @@ namespace Sudoku.Control
         private int _time;
         public Player Player { get; }
 
-        private Field _field;
+        public Field Field { get; private set; }
         private Timer _timer;
 
         public int Time
@@ -53,11 +53,11 @@ namespace Sudoku.Control
 
         public void Load(SudokuGenerator.GameDifficulty gameDifficulty)
         {
-            _field = SudokuGenerator.GenerateField(gameDifficulty);
+            Field = SudokuGenerator.GenerateField(gameDifficulty);
         }
         public void Load()
         {
-            _field = new Field();
+            Field = new Field();
         }
         public void Start()
         {
@@ -76,28 +76,28 @@ namespace Sudoku.Control
 
         public void Set(int x, int y, byte value)
         {
-            if (_field[x, y].Locked == 0)
-                _field[x, y].Value = value;
+            if (Field[x, y].Locked == 0)
+                Field[x, y].Value = value;
         }
 
         public void Set(int x, int y, Cell c)
         {
-            _field[x, y] = c;
+            Field[x, y] = c;
         }
 
         public bool IsLocked(int x, int y)
         {
-            return _field[x, y].Locked != 0;
+            return Field[x, y].Locked != 0;
         }
 
         public Cell Get(int x, int y)
         {
-            return _field[x, y];
+            return Field[x, y];
         }
 
         public int CalculateScore(int x, int y, bool collision)
         {
-            var cell = _field[x, y];
+            var cell = Field[x, y];
             if (collision && (cell.ScoreState & 2) != 2)
             {
                 cell.ScoreState |= 2;
@@ -127,16 +127,16 @@ namespace Sudoku.Control
                 for (int x = 0; x < 3; x++)
                 {
                     int i = x + y * 3;
-                    if (_field[i, yM].Value == value)
+                    if (Field[i, yM].Value == value)
                     {
                         collisions.Add((i, yM));
                     }
-                    if (_field[xM, i].Value == value)
+                    if (Field[xM, i].Value == value)
                     {
                         collisions.Add((xM, i));
                     }
 
-                    if (_field[x + qX * 3, y + qY * 3].Value == value)
+                    if (Field[x + qX * 3, y + qY * 3].Value == value)
                     {
                         collisions.Add((x + qX * 3, y + qY * 3));
                     }
@@ -154,7 +154,7 @@ namespace Sudoku.Control
                 return false;
             }
 
-            _field[xM, yM].Value = value;
+            Field[xM, yM].Value = value;
             this.Score += (int)(CalculateScore(xM, yM, false) * factor);
             return true;
         }
@@ -164,18 +164,13 @@ namespace Sudoku.Control
             return 1f + (4f / ((value / 2000f) + 1f));
         }
 
-        public void SetField(Field f)
-        {
-            _field = f;
-        }
-
         public bool IsFinished()
         {
             for (int y = 0; y < 9; y++)
             {
                 for (int x = 0; x < 9; x++)
                 {
-                    if (_field[x, y].Value == 0)
+                    if (Field[x, y].Value == 0)
                     {
                         return false;
                     }
