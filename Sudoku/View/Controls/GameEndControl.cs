@@ -6,10 +6,20 @@ using Sudoku.Model;
 
 namespace Sudoku.View.Controls
 {
+    /// <summary>
+    ///     A game end control.
+    /// </summary>
     public partial class GameEndControl : UserControl
     {
+        /// <summary>
+        ///     Occurs when On Back To Main Menu Clicked.
+        /// </summary>
         public event EventHandler<EventArgs> OnBackToMainMenuClicked;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GameEndControl"/> class.
+        /// </summary>
+        /// <param name="game"> The game. </param>
         public GameEndControl(Game game)
         {
             InitializeComponent();
@@ -48,6 +58,11 @@ namespace Sudoku.View.Controls
             };
         }
 
+        /// <summary>
+        ///     Event handler. Called by toMainMenu_button for click events.
+        /// </summary>
+        /// <param name="sender"> Source of the event. </param>
+        /// <param name="e">      Event information. </param>
         private void toMainMenu_button_Click(object sender, EventArgs e)
         {
             OnBackToMainMenuClicked?.Invoke(this, e);

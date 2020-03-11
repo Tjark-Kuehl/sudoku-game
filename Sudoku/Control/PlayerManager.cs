@@ -5,8 +5,12 @@ using Sudoku.Model;
 
 namespace Sudoku.Control
 {
+    /// <summary>
+    ///     A player loader.
+    /// </summary>
     public class PlayerLoader : IPlayerLoader
     {
+        /// <inheritdoc/>
         public void SavePlayer(Player player)
         {
             using var fs = new FileStream(Path.Combine("player", player.ID.ToString()), FileMode.Create, FileAccess.Write);
@@ -14,6 +18,7 @@ namespace Sudoku.Control
             player.Save(writer);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<Player> LoadPlayers()
         {
             DirectoryInfo d = new DirectoryInfo("player");

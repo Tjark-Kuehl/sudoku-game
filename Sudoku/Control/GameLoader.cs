@@ -3,11 +3,18 @@ using Sudoku.Model;
 
 namespace Sudoku.Control
 {
+    /// <summary>
+    ///     A game loader.
+    /// </summary>
     class GameLoader : IGameLoader
     {
+        /// <summary>
+        ///     Saves the given game.
+        /// </summary>
+        /// <param name="game"> [out] The game. </param>
         public void Save(Game game)
         {
-            if (!HasSaveFile(game.Player, out var saveFile))
+            if (!HasSaveFile(game.Player, out FileInfo saveFile))
             {
                 saveFile.Directory.Create();
             }
@@ -25,10 +32,18 @@ namespace Sudoku.Control
                 }
         }
 
+        /// <summary>
+        ///     Loads.
+        /// </summary>
+        /// <param name="player"> The player. </param>
+        /// <param name="game">   [out] The game. </param>
+        /// <returns>
+        ///     True if it succeeds, false if it fails.
+        /// </returns>
         public bool Load(Player player, out Game game)
         {
             game = null;
-            if (!HasSaveFile(player, out var saveFile)) return false;
+            if (!HasSaveFile(player, out FileInfo saveFile)) return false;
             using var s = saveFile.Open(FileMode.Open, FileAccess.Read);
             using var r = new BinaryReader(s);
             game = new Game(player, r.ReadInt32(), r.ReadInt32());
@@ -46,6 +61,14 @@ namespace Sudoku.Control
             return true;
         }
 
+        /// <summary>
+        ///     Query if 'player' has save file.
+        /// </summary>
+        /// <param name="player">   The player. </param>
+        /// <param name="saveFile"> [out] The save file. </param>
+        /// <returns>
+        ///     True if save file, false if not.
+        /// </returns>
         public bool HasSaveFile(Player player, out FileInfo saveFile)
         {
             saveFile = new FileInfo(Path.Combine("savegames", player.ID.ToString()));

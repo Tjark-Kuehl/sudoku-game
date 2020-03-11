@@ -6,70 +6,136 @@ using System.Linq;
 namespace Sudoku.Control
 {
 
+    /// <summary>
+    ///     A sudoku generator.
+    /// </summary>
     public static class SudokuGenerator
     {
+        /// <summary>
+        ///     The random.
+        /// </summary>
         private static Random s_rnd = new Random();
 
 
+        /// <summary>
+        ///     A game difficulty.
+        /// </summary>
         public abstract class GameDifficulty
         { 
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="GameDifficulty"/> class.
+            /// </summary>
             protected GameDifficulty()
             {
                 
             }
 
+           /// <summary>
+           ///  Gets the number of empty fields.
+           /// </summary>
+           /// <value>
+           ///  The number of empty fields.
+           /// </value>
            public abstract int EmptyFieldCount { get; }
 
+           /// <summary>
+           ///  An easy. This class cannot be inherited.
+           /// </summary>
            public sealed class Easy : GameDifficulty
            {
+               /// <summary>
+               ///  Gets the number of empty fields.
+               /// </summary>
+               /// <value>
+               ///  The number of empty fields.
+               /// </value>
                public override int EmptyFieldCount
                {
-                   get => 40;
+                   get { return 40; }
                }
 
+               /// <summary>
+               ///  The default.
+               /// </summary>
                public static readonly Easy Default = new Easy();
            }
 
+           /// <summary>
+           ///  A medium. This class cannot be inherited.
+           /// </summary>
            public sealed class Medium : GameDifficulty
            {
+               /// <summary>
+               ///  Gets the number of empty fields.
+               /// </summary>
+               /// <value>
+               ///  The number of empty fields.
+               /// </value>
                public override int EmptyFieldCount
                {
-                   get => 50;
+                   get { return 50; }
                }
+
+               /// <summary>
+               ///  The default.
+               /// </summary>
                public static readonly Medium Default = new Medium();
             }
 
+           /// <summary>
+           ///  A hard. This class cannot be inherited.
+           /// </summary>
            public sealed class Hard : GameDifficulty
            {
+               /// <summary>
+               ///  Gets the number of empty fields.
+               /// </summary>
+               /// <value>
+               ///  The number of empty fields.
+               /// </value>
                public override int EmptyFieldCount
                {
-                   get => 60;
+                   get { return 60; }
                }
+
+               /// <summary>
+               ///  The default.
+               /// </summary>
                public static readonly Hard Default = new Hard();
             }
         }
 
 
+        /// <summary>
+        ///     Generates a field.
+        /// </summary>
+        /// <param name="gameDifficulty">      The game difficulty. </param>
+        /// <param name="possibleSolutionMax"> (Optional) The possible solution maximum. </param>
+        /// <returns>
+        ///     The field.
+        /// </returns>
         public static Field GenerateField(GameDifficulty gameDifficulty, int possibleSolutionMax = 80)
         {
         retry:
             Field field = new Field();
+            // Generate first 'row' with random possibilities
             Stack<byte> xs = new Stack<byte>(Possibilities.OrderBy(s => s_rnd.Next()));
             for (int x = 0; x < 9; x++)
             {
                 field[x, 0] = new Cell { Value = xs.Pop() };
             }
 
+            // Skip first line and continue filling up
             for (int y = 1; y < 9; y++)
             {
                 for (int x = 0; x < 9; x++)
                 {
                     List<byte> p = new List<byte>();
-                    for (int xl = x - 1; xl >= 0; xl--)
+                    for (int xl = 0; xl < x; xl++)
                     {
                         p.Add(field[xl, y].Value);
                     }
-                    for (int yl = y - 1; yl >= 0; yl--)
+                    for (int yl = 0; yl < y; yl++)
                     {
                         p.Add(field[x, yl].Value);
                     }
@@ -84,16 +150,16 @@ namespace Sudoku.Control
                         }
                     }
 
-                    var v = Possibilities.Where(s => !p.Contains(s)).OrderBy(s => s_rnd.Next());
+                    var possibleValues = Possibilities.Where(s => !p.Contains(s)).OrderBy(s => s_rnd.Next());
                     // ReSharper disable once PossibleMultipleEnumeration
-                    if (!v.Any())
+                    if (!possibleValues.Any())
                     {
                         goto retry;
                     }
                     field[x, y] = new Cell
                     {
                         // ReSharper disable once PossibleMultipleEnumeration
-                        Value = v.First()
+                        Value = possibleValues.First()
                     };
                 }
             }
@@ -115,6 +181,13 @@ namespace Sudoku.Control
             return field;
         }
 
+        /// <summary>
+        ///     Enumerates solutions in this collection.
+        /// </summary>
+        /// <param name="field"> The field. </param>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process solutions in this collection.
+        /// </returns>
         public static IEnumerable<Field> Solutions(Field field)
         {
             Field f = new Field();
@@ -134,6 +207,15 @@ namespace Sudoku.Control
             return GenerateSolution(f);
         }
 
+        /// <summary>
+        ///     Calculates all possibilities for cell.
+        /// </summary>
+        /// <param name="field"> The field. </param>
+        /// <param name="cx">    The cx. </param>
+        /// <param name="cy">    The cy. </param>
+        /// <returns>
+        ///     The calculated all possibilities for cell.
+        /// </returns>
         private static IList<byte> CalculateAllPossibilitiesForCell(Field field, int cx, int cy)
         {
             List<byte> p = new List<byte>();
@@ -155,14 +237,27 @@ namespace Sudoku.Control
             for (int yq = 0; yq < 3; yq++)
                 for (int xq = 0; xq < 3; xq++)
                 {
-                    if ((qx + xq == cx && qy + yq == cy) || field[qx + xq, qy + yq].Locked == 0) continue;
+                    if (qx + xq == cx && qy + yq == cy || field[qx + xq, qy + yq].Locked == 0) continue;
                     p.Add(field[qx + xq, qy + yq].Value);
                 }
             return Possibilities.Except(p.Distinct()).ToList();
         }
 
+        /// <summary>
+        ///     The possibilities.
+        /// </summary>
         private static readonly byte[] Possibilities = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
+        /// <summary>
+        ///     Gets free cell.
+        /// </summary>
+        /// <param name="field">         The field. </param>
+        /// <param name="fx">            [out] The effects. </param>
+        /// <param name="fy">            [out] The fy. </param>
+        /// <param name="possibilities"> [out] The possibilities. </param>
+        /// <returns>
+        ///     True if it succeeds, false if it fails.
+        /// </returns>
         private static bool GetFreeCell(Field field, out int fx, out int fy, out IList<byte> possibilities)
         {
             for (fy = 0; fy < 9; fy++)
@@ -183,6 +278,13 @@ namespace Sudoku.Control
             return false;
         }
 
+        /// <summary>
+        ///     Enumerates generate solution in this collection.
+        /// </summary>
+        /// <param name="f"> The Field to process. </param>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process generate solution in this collection.
+        /// </returns>
         private static IEnumerable<Field> GenerateSolution(Field f)
         {
             if (GetFreeCell(f, out int fx, out int fy, out IList<byte> possibilities))

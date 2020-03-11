@@ -6,20 +6,52 @@ using System.Windows.Forms;
 
 namespace Sudoku.View.Controls
 {
+    /// <summary>
+    ///     A game control.
+    /// </summary>
     partial class GameControl : UserControl
     {
+        /// <summary>
+        ///     The current location.
+        /// </summary>
         protected Point? _currentLocation;
+        /// <summary>
+        ///     The collisions.
+        /// </summary>
         protected IList<(int, int)> _collisions = new List<(int, int)>();
 
+        /// <summary>
+        ///     Gets the millimetres.
+        /// </summary>
+        /// <value>
+        ///     The millimetres.
+        /// </value>
         protected Point _m, _mm;
         
+        /// <summary>
+        ///     The game.
+        /// </summary>
         private readonly Game _game;
+        /// <summary>
+        ///     The game menu.
+        /// </summary>
         private readonly GameMenuControl _gameMenu;
+        /// <summary>
+        ///     The field renderer.
+        /// </summary>
         private readonly FieldRenderer _fieldRenderer;
 
 
+        /// <summary>
+        ///     Occurs when On Game Finished.
+        /// </summary>
         public event EventHandler<EventArgs> OnGameFinished; 
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="game">     The game. </param>
+        /// <param name="gameMenu"> The game menu. </param>
         public GameControl(Game game, GameMenuControl gameMenu)
         {
             _game = game;
@@ -29,6 +61,7 @@ namespace Sudoku.View.Controls
             InitializeComponent();
         }
 
+        /// <inheritdoc/>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -46,6 +79,7 @@ namespace Sudoku.View.Controls
             g.DrawImage(b, 0, 0);
 
         }
+        /// <inheritdoc/>
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
@@ -152,6 +186,7 @@ namespace Sudoku.View.Controls
                 OnGameFinished?.Invoke(this, EventArgs.Empty);
             }
         }
+        /// <inheritdoc/>
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnMouseClick(e);

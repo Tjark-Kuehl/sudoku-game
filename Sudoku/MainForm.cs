@@ -7,11 +7,23 @@ using Sudoku.View;
 
 namespace Sudoku
 {
+    /// <summary>
+    ///     The application's main form.
+    /// </summary>
     public partial class MainForm : Form
     {
+        /// <summary>
+        ///     The game loader.
+        /// </summary>
         private IGameLoader _gameLoader;
+        /// <summary>
+        ///     The player loader.
+        /// </summary>
         private IPlayerLoader _playerLoader;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MainForm"/> class.
+        /// </summary>
         public MainForm()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -34,6 +46,9 @@ namespace Sudoku
         }
 
 
+        /// <summary>
+        ///     Loads main menu.
+        /// </summary>
         public void LoadMainMenu()
         {
             Controls.Clear();

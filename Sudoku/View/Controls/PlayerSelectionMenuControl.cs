@@ -5,11 +5,24 @@ using Sudoku.Model;
 
 namespace Sudoku.View.Controls
 {
+    /// <summary>
+    ///     A player selection menu control.
+    /// </summary>
     public partial class PlayerSelectionMenuControl : UserControl
     {
+        /// <summary>
+        ///     Occurs when On User Selected.
+        /// </summary>
         public event EventHandler<Player> OnUserSelected;
+        /// <summary>
+        ///     The player loader.
+        /// </summary>
         private readonly IPlayerLoader _playerLoader;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerSelectionMenuControl"/> class.
+        /// </summary>
+        /// <param name="playerLoader"> The player loader. </param>
         public PlayerSelectionMenuControl(IPlayerLoader playerLoader)
         {
             _playerLoader = playerLoader;
@@ -18,6 +31,9 @@ namespace Sudoku.View.Controls
             UpdateList();
         }
 
+        /// <summary>
+        ///     Updates the list.
+        /// </summary>
         private void UpdateList()
         {
             tableLayoutPanel1.Controls.Clear();
@@ -28,6 +44,13 @@ namespace Sudoku.View.Controls
             }
         }
 
+        /// <summary>
+        ///     Adds a player.
+        /// </summary>
+        /// <param name="player"> The player. </param>
+        /// <returns>
+        ///     A Player.
+        /// </returns>
         Player AddPlayer(Player player)
         {
             var p = new Button
@@ -44,6 +67,11 @@ namespace Sudoku.View.Controls
             return player;
         }
 
+        /// <summary>
+        ///     Event handler. Called by createNewPlayerButton for click events.
+        /// </summary>
+        /// <param name="sender"> Source of the event. </param>
+        /// <param name="e">      Event information. </param>
         private void createNewPlayerButton_Click(object sender, EventArgs e)
         {
             var popup = new CreatePlayerPopupControl();

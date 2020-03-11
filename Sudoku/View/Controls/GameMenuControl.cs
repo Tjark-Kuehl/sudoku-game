@@ -4,21 +4,46 @@ using Sudoku.Control;
 
 namespace Sudoku.View.Controls
 {
+    /// <summary>
+    ///     A game menu control.
+    /// </summary>
     public partial class GameMenuControl : UserControl
     {
+        /// <summary>
+        ///     The game.
+        /// </summary>
         private readonly Game _game;
+        /// <summary>
+        ///     Occurs when On Game Finished.
+        /// </summary>
         public event EventHandler<EventArgs> OnGameFinished;
+        /// <summary>
+        ///     Gets or sets the score.
+        /// </summary>
+        /// <value>
+        ///     The score.
+        /// </value>
         private int Score
         {
             get { return int.Parse(score.Text); }
             set { score.Text = value.ToString(); }
         }
+        /// <summary>
+        ///     Gets or sets the time.
+        /// </summary>
+        /// <value>
+        ///     The time.
+        /// </value>
         private int Time
         {
             get { return int.Parse(time.Text); }
             set { time.Text = value.ToString(); }
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="GameMenuControl"/> class.
+        /// </summary>
+        /// <param name="game"> The game. </param>
         public GameMenuControl(Game game)
         {
             _game = game;
@@ -61,6 +86,11 @@ namespace Sudoku.View.Controls
             game.Start();
         }
 
+        /// <summary>
+        ///     Event handler. Called by button1 for click events.
+        /// </summary>
+        /// <param name="sender"> Source of the event. </param>
+        /// <param name="e">      Event information. </param>
         private void button1_Click(object sender, EventArgs e)
         {
             _game.End();

@@ -4,12 +4,33 @@ using Sudoku.Model;
 
 namespace Sudoku
 {
+    /// <summary>
+    ///     A field renderer.
+    /// </summary>
     class FieldRenderer
     {
+        /// <summary>
+        ///     Gets the red pen small.
+        /// </summary>
+        /// <value>
+        ///     The red pen small.
+        /// </value>
         protected readonly Pen _blackPenBig, _blackPenSmall, _yellowPenSmall, _orangePenSmall, _redPenSmall;
+        /// <summary>
+        ///     Gets the light green.
+        /// </summary>
+        /// <value>
+        ///     The light green.
+        /// </value>
         protected readonly SolidBrush _lightYelllow, _lightGreen;
+        /// <summary>
+        ///     The font.
+        /// </summary>
         protected readonly Font _font = new Font("Arial", 32, FontStyle.Regular, GraphicsUnit.Pixel);
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FieldRenderer"/> class.
+        /// </summary>
         public FieldRenderer()
         {
             _blackPenBig = new Pen(Color.Black, 6.0f);
@@ -21,6 +42,15 @@ namespace Sudoku
             _lightGreen = new SolidBrush(Color.FromArgb(32, Color.Green));
         }
 
+        /// <summary>
+        ///     Paints the selection.
+        /// </summary>
+        /// <param name="g">          The Graphics to process. </param>
+        /// <param name="w">          The width. </param>
+        /// <param name="h">          The height. </param>
+        /// <param name="m">          The Point to process. </param>
+        /// <param name="mm">         The millimetres. </param>
+        /// <param name="collisions"> The collisions. </param>
         public void PaintSelection(Graphics g, float w, float h, Point m, Point mm, IList<(int xx, int yy)> collisions)
         {
             w -= 4 * _blackPenBig.Width;
@@ -72,6 +102,13 @@ namespace Sudoku
 
         }
 
+        /// <summary>
+        ///     Paints the board.
+        /// </summary>
+        /// <param name="g">     The Graphics to process. </param>
+        /// <param name="w">     The width. </param>
+        /// <param name="h">     The height. </param>
+        /// <param name="field"> The field. </param>
         public void PaintBoard(Graphics g, float w, float h, Field field)
         {
             w -= _blackPenBig.Width;

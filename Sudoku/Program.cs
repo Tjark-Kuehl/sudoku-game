@@ -8,11 +8,13 @@ using Sudoku.View;
 
 namespace Sudoku
 {
+    /// <summary>
+    ///     A program.
+    /// </summary>
     static class Program
     {
-        private static readonly byte[] Possibilities = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
