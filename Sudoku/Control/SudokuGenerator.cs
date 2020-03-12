@@ -16,7 +16,6 @@ namespace Sudoku.Control
         /// </summary>
         private static Random s_rnd = new Random();
 
-
         /// <summary>
         ///     A game difficulty.
         /// </summary>
