@@ -16,6 +16,7 @@ namespace Sudoku
         ///     The game loader.
         /// </summary>
         private IGameLoader _gameLoader;
+
         /// <summary>
         ///     The player loader.
         /// </summary>

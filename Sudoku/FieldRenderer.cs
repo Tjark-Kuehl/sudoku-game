@@ -16,6 +16,7 @@ namespace Sudoku
         ///     The red pen small.
         /// </value>
         protected readonly Pen _blackPenBig, _blackPenSmall, _yellowPenSmall, _orangePenSmall, _redPenSmall;
+
         /// <summary>
         ///     Gets the light green.
         /// </summary>
@@ -23,6 +24,7 @@ namespace Sudoku
         ///     The light green.
         /// </value>
         protected readonly SolidBrush _lightYelllow, _lightGreen;
+
         /// <summary>
         ///     The font.
         /// </summary>

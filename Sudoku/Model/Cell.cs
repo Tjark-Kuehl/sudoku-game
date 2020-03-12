@@ -12,6 +12,7 @@
         ///     The value.
         /// </value>
         public byte Value { get; set; }
+
         /// <summary>
         ///     Gets or sets the locked.
         /// </summary>

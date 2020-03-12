@@ -30,12 +30,12 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.top_pnael = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.score = new System.Windows.Forms.Label();
             this.score_label = new System.Windows.Forms.Label();
             this.bottom_panel = new System.Windows.Forms.Panel();
             this.time = new System.Windows.Forms.Label();
             this.time_label = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.top_pnael.SuspendLayout();
             this.bottom_panel.SuspendLayout();
@@ -67,6 +67,13 @@
             this.top_pnael.Name = "top_pnael";
             this.top_pnael.Size = new System.Drawing.Size(733, 19);
             this.top_pnael.TabIndex = 0;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
             // 
             // score
             // 
@@ -119,18 +126,8 @@
             this.time_label.Name = "time_label";
             this.time_label.Size = new System.Drawing.Size(58, 19);
             this.time_label.TabIndex = 2;
-            this.time_label.Text = "Time:";
+            this.time_label.Text = "Zeit:";
             this.time_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(513, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // GameMenuControl
             // 

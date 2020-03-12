@@ -15,13 +15,16 @@ namespace Sudoku.Model
         ///     The identifier.
         /// </value>
         public Guid ID { get; }
+
         /// <summary>
         ///     Gets the name.
         /// </summary>
         /// <value>
         ///     The name.
         /// </value>
+        /// 
         public string Name { get; }
+
         /// <summary>
         ///     Gets or sets the score.
         /// </summary>
@@ -29,6 +32,7 @@ namespace Sudoku.Model
         ///     The score.
         /// </value>
         public int Score { get; set; }
+
         /// <summary>
         ///     Gets or sets the number of games.
         /// </summary>
@@ -36,6 +40,7 @@ namespace Sudoku.Model
         ///     The number of games.
         /// </value>
         public int GameCount { get; set; }
+
         /// <summary>
         ///     Gets or sets the playtime.
         /// </summary>
@@ -43,6 +48,7 @@ namespace Sudoku.Model
         ///     The playtime.
         /// </value>
         public int Playtime { get; set; }
+
         /// <summary>
         ///     Gets the Date/Time of the created.
         /// </summary>

@@ -85,16 +85,5 @@ namespace Sudoku.View.Controls
             };
             game.Start();
         }
-
-        /// <summary>
-        ///     Event handler. Called by button1 for click events.
-        /// </summary>
-        /// <param name="sender"> Source of the event. </param>
-        /// <param name="e">      Event information. </param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            _game.End();
-            OnGameFinished?.Invoke(this, EventArgs.Empty);
-        }
     }
 }

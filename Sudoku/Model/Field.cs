@@ -9,6 +9,7 @@
         ///     The cells.
         /// </summary>
         private Cell[,] _cells;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Field"/> class.
         /// </summary>

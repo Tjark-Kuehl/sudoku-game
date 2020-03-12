@@ -36,9 +36,9 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -52,7 +52,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(544, 50);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Herzlichen Glückwunsch du kleiner Wicht, du hast das Sudoku gelöst\r\n";
+            this.label1.Text = "Herzlichen Glückwunsch du hast das Sudoku gelöst\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // score_label
@@ -137,26 +137,6 @@
             this.panel3.Size = new System.Drawing.Size(538, 19);
             this.panel3.TabIndex = 4;
             // 
-            // button2
-            // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button2.Location = new System.Drawing.Point(352, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(186, 19);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "next solution";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(186, 19);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "next solution";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -166,6 +146,26 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "label2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(186, 19);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "<<";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.button2.Location = new System.Drawing.Point(352, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(186, 19);
+            this.button2.TabIndex = 1;
+            this.button2.Text = ">>";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // GameEndControl
             // 

@@ -14,6 +14,7 @@ namespace Sudoku.Control
         ///     Occurs when On Time Changed.
         /// </summary>
         public event EventHandler<int> OnTimeChanged;
+
         /// <summary>
         ///     Occurs when On Score Changed.
         /// </summary>
@@ -118,6 +119,7 @@ namespace Sudoku.Control
         {
             Field = SudokuGenerator.GenerateField(gameDifficulty);
         }
+
         /// <summary>
         ///     Loads this object.
         /// </summary>
@@ -125,6 +127,7 @@ namespace Sudoku.Control
         {
             Field = new Field();
         }
+
         /// <summary>
         ///     Starts this object.
         /// </summary>
@@ -222,7 +225,6 @@ namespace Sudoku.Control
                 cell.ScoreState |= 4;
                 return -75;
             }
-
             return 0;
         }
 
@@ -250,6 +252,7 @@ namespace Sudoku.Control
                     {
                         collisions.Add((i, yM));
                     }
+
                     if (Field[xM, i].Value == value)
                     {
                         collisions.Add((xM, i));
